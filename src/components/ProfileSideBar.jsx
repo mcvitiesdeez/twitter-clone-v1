@@ -30,7 +30,7 @@ export default function ProfileSideBar({ handleLogout }) {
             <IconButton className="bi bi-filter-circle" text="More" />
             <IconButton className="bi bi-chat-square-text" text="Chatbot" />
             <IconButton className="bi bi-door-closed" text="Logout" onClick={handleLogout} />
-            <Button className='rounded-pill w-100 mb-3'>Tweet</Button>
+            <Button className='rounded-pill w-100 mb-3' onClick={handleShow}>Tweet</Button>
 
             <NewPostModal show={show} handleClose={handleClose} />
             {/* <ChatbotModal show={showChatBot} handleClose={handleCloseChatbot} /> */}
