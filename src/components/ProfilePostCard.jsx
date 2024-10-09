@@ -9,7 +9,7 @@ export default function ProfilePostCard({ content, postId }) {
     useEffect(() => {
         fetch(`${BASE_URL}/likes/post/${postId}`)
             .then((response) => response.json())
-            .then((data) => setLikes(data))
+            .then((data) => setLikes(data.length))
             .catch((error) => console.error("Error:", error));
     }, [postId]);
 
@@ -32,7 +32,7 @@ export default function ProfilePostCard({ content, postId }) {
                         <i className="bi bi-repeat"></i>
                     </Button>
                     <Button variant="light">
-                        <i className="bi bi-heart">{likes}</i>
+                        <i className="bi bi-heart"> {likes}</i>
                     </Button>
                     <Button variant="light">
                         <i className="bi bi-graph-up"></i>
