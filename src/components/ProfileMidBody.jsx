@@ -1,28 +1,27 @@
+import { jwtDecode } from 'jwt-decode';
+import { useEffect } from 'react';
 import { Button, Col, Image, Nav, Row, Spinner } from 'react-bootstrap'
 import ProfilePostCard from './ProfilePostCard'
-import { jwtDecode } from 'jwt-decode';
-import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPostsByUser } from '../features/posts/postsSlice';
 
 export default function ProfileMidBody() {
-    const [posts, setPosts] = useState([]);
     const url = "https://pbs.twimg.com/profile_banners/83072625/1602845571/1500x500";
     const pic = "https://pbs.twimg.com/profile_images/1587405892437221376/h167Jlb2_400x400.jpg";
 
-    const fetchPosts = (userId) => {
-        fetch(`https://8ab5a041-0ba3-4f7b-8a44-36be1bedff84-00-3ttw70bhq1idl.sisko.replit.dev/posts/user/${userId}`)
-            .then((response) => response.json())
-            .then((data) => setPosts(data))
-            .catch((error) => console.error("Error: ", error));
-    }
+    //Redux
+    const dispatch = useDispatch();
+    const posts = useSelector((state) => state.posts.posts);
+    const loading = useSelector((state) => state.posts.loading);
 
     useEffect(() => {
         const token = localStorage.getItem("authToken");
         if (token) {
             const decodedToken = jwtDecode(token);
             const userId = decodedToken.id;
-            fetchPosts(userId)
+            dispatch(fetchPostsByUser(userId));
         }
-    }, [])
+    }, [dispatch])
 
     return (
         <Col sm={6} className='gb-light' style={{ bborder: "1px solid lightgrey" }}>
@@ -72,6 +71,10 @@ export default function ProfileMidBody() {
                     <Nav.Link eventKey="/link-4">Likes</Nav.Link>
                 </Nav.Item>
             </Nav>
+            {loading && (
+                <Spinner animation="border" className="ms-3 mt-3" variant="primary" />
+            )}
+
             {posts.map((post) => (
                 <ProfilePostCard key={post.id} content={post.content} postId={post.id} />
             ))}
